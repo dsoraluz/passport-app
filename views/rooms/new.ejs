@@ -1,0 +1,29 @@
+<h1>Add New Room</h1>
+
+<% if(message){ %>
+  <p class="success>">
+    <%= message %>
+  </p>
+<% } %>
+
+<!---                                  means file can be very big so it will send it in chunks instead all at once. -->
+<!--                                                   |         -->
+<form action="/rooms" method="post" enctype="multipart/form-data">
+  <div>
+    <label for="name-input"> Name </label>
+    <input id="name-input" type="text" name="name" />
+  </div>
+
+  <div>
+    <label for="desc-input"> Description </label>
+    <input id="desc-input" type="text" name="desc" />
+  </div>
+
+  <!-- or File upload-->
+  <div>
+    <label for="picture-input"> Picture </label>
+    <input id="picture-input" type="file" name="picture" />
+  </div>
+
+<button>Add Room</button>
+</form>
