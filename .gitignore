@@ -31,3 +31,7 @@ npm-debug.log
 
 # Picture Uploads folder
 public/uploads
+
+#Environment Variables file
+
+.env

@@ -15,10 +15,17 @@ const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const bcrypt = require('bcrypt');
 const flash = require('connect-flash');
 
+//-------------LOADS .env FILE----------------
+//DotENV does the work to make sure the env file is recognized even though it is in .gitignore.
+const dotenv = require('dotenv');
+
 const User = require('./models/user-model.js');
 //-------------------------------------------
 
-mongoose.connect('mongodb://localhost/passport-app');
+//Starts dotenv
+dotenv.config();
+mongoose.connect(process.env.MONGODB_URI);
+// mongoose.connect('mongodb://localhost/passport-app');
 
 const app = express();
 
@@ -70,9 +77,9 @@ passport.use(new LocalStrategy((username, password, next) => {
 }));
 
 passport.use(new FbStrategy({
-  clientID: '...',       //The AppID from facebook
-  clientSecret: '...',   //The App Secret from Facebook
-  callbackURL: 'http://localhost:3000/auth/facebook/callback' //The place you want the user to come back to after coming back from facebook
+  clientID: process.env.FB_CLIENT_ID,       //The AppID from facebook
+  clientSecret: process.env.FB_CLIENT_SECRET,   //The App Secret from Facebook
+  callbackURL: process.env.HOST_ADDRESS + '/auth/facebook/callback' //The place you want the user to come back to after coming back from facebook
 },(accessToken, refreshToken, profile, done)=>{ //when facebook returns successful with the credentials
   done(null,profile); //Handle the profile... comes back as an object.. which passport always organizes into a structure for us
 //The provider we used to authenticate the user (facebook, gmail, github…).
@@ -83,9 +90,9 @@ passport.use(new FbStrategy({
 }));
 
 passport.use(new GoogleStrategy({
-  clientID: "...",
-  clientSecret: "...",
-  callbackURL: "http://localhost:3000/auth/google/callback"
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: process.env.HOST_ADDRESS + '/auth/google/callback'
 }, (accessToken, refreshToken, profile, next) => {
   return next(null, profile);
 }));
